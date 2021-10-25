@@ -29,7 +29,6 @@
         <activeByDefault>true</activeByDefault>
       </activation>
       <properties>
-
         <suiteXml>${project.basedir}/src/test/java/resources/com/epam/tc/hw1/SumSubTestSuite.xml</suiteXml>
       </properties>
     </profile>
