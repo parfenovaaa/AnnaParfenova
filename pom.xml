@@ -112,6 +112,7 @@
         <artifactId>maven-surefire-plugin</artifactId>
         <version>${surefireplugin.versoin}</version>
         <configuration>
+          <testFailureIgnore>true</testFailureIgnore>
           <suiteXmlFiles>
             <suiteXmlFile>${suiteXml}</suiteXmlFile>
           </suiteXmlFiles>
