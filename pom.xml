@@ -29,21 +29,21 @@
         <activeByDefault>true</activeByDefault>
       </activation>
       <properties>
-        <suiteXml>${project.basedir}/src/test/java/resources/com/epam/tc/hw1/SumSubTestSuite.xml</suiteXml>
+        <suiteXml>${project.basedir}/src/test/resources/com/epam/tc/hw1/SumSubTestSuite.xml</suiteXml>
       </properties>
     </profile>
 
     <profile>
       <id>multi-div-test-suite</id>
       <properties>
-        <suiteXml>${project.basedir}/src/test/java/resources/com/epam/tc/hw1/MultiplyDivideTestSuite.xml</suiteXml>
+        <suiteXml>${project.basedir}/src/test/resources/com/epam/tc/hw1/MultiplyDivideTestSuite.xml</suiteXml>
       </properties>
     </profile>
 
     <profile>
       <id>sum-subtract-multiply-div-test-suite</id>
       <properties>
-        <suiteXml>${project.basedir}/src/test/java/resources/com/epam/tc/hw1/SumSubMultiDivTestSuite.xml</suiteXml>
+        <suiteXml>${project.basedir}/src/test/resources/com/epam/tc/hw1/SumSubMultiDivTestSuite.xml</suiteXml>
       </properties>
     </profile>
   </profiles>

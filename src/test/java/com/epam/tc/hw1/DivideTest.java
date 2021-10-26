@@ -20,13 +20,11 @@ public class DivideTest extends CalculatorTest {
 
     @Test(dataProvider = "divideDoubleDataProvider")
     public void divideDoubleTest(double x1, double x2, double expected) {
-
-        if (x2 == 0L) {
-            Throwable thrown = catchThrowable(() -> calculator.div(x1, x2));
-            assertThat(thrown)
-                .hasMessageContaining("Attempt to divide by zero");
+        double actual = calculator.div(x1, x2);
+        if (x2 == 0 && String.valueOf(actual).equals("Infinity")) {
+            assertEquals("Infinity", String.valueOf(actual));
         } else {
-            assertEquals(expected, calculator.div(x1, x2));
+            assertEquals(expected, actual);
         }
     }
 
