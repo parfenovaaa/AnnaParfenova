@@ -51,7 +51,7 @@
     </profile>
 
     <profile>
-      <id>homework-test-suite</id>
+      <id>homework2-test-suite</id>
       <properties>
         <suiteXml>${project.basedir}/src/test/resources/com/epam/tc/hw2/Homework2TestSuite.xml</suiteXml>
       </properties>
@@ -93,21 +93,6 @@
       <groupId>io.github.bonigarcia</groupId>
       <artifactId>webdrivermanager</artifactId>
       <version>${webdrivermanager.version}</version>
-    </dependency>
-
-    <!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-api -->
-    <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-api</artifactId>
-      <version>1.7.32</version>
-    </dependency>
-
-    <!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-simple -->
-    <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-simple</artifactId>
-      <version>1.7.32</version>
-      <scope>test</scope>
     </dependency>
 
 
