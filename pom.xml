@@ -20,6 +20,9 @@
     <checkstyle.version>8.42</checkstyle.version>
     <maven-checkstyle-plugin.version>3.1.2</maven-checkstyle-plugin.version>
 
+    <selenium.version>4.0.0</selenium.version>
+    <webdrivermanager.version>5.0.3</webdrivermanager.version>
+
   </properties>
 
   <profiles>
@@ -46,6 +49,13 @@
         <suiteXml>${project.basedir}/src/test/resources/com/epam/tc/hw1/SumSubMultiDivTestSuite.xml</suiteXml>
       </properties>
     </profile>
+
+    <profile>
+      <id>homework-test-suite</id>
+      <properties>
+        <suiteXml>${project.basedir}/src/test/resources/com/epam/tc/hw2/Homework2TestSuite.xml</suiteXml>
+      </properties>
+    </profile>
   </profiles>
 
   <dependencies>
@@ -70,6 +80,38 @@
       <version>${assertj.version}</version>
       <scope>test</scope>
     </dependency>
+
+    <!-- https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-java -->
+    <dependency>
+      <groupId>org.seleniumhq.selenium</groupId>
+      <artifactId>selenium-java</artifactId>
+      <version>${selenium.version}</version>
+    </dependency>
+
+    <!-- https://mvnrepository.com/artifact/io.github.bonigarcia/webdrivermanager -->
+    <dependency>
+      <groupId>io.github.bonigarcia</groupId>
+      <artifactId>webdrivermanager</artifactId>
+      <version>${webdrivermanager.version}</version>
+    </dependency>
+
+    <!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-api -->
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
+      <version>1.7.32</version>
+    </dependency>
+
+    <!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-simple -->
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-simple</artifactId>
+      <version>1.7.32</version>
+      <scope>test</scope>
+    </dependency>
+
+
+
   </dependencies>
 
   <build>
