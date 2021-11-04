@@ -1,70 +1,40 @@
 package com.epam.tc.hw2.ex2;
 
+import com.epam.tc.hw2.BaseTest;
 import com.google.common.collect.Lists;
-import io.github.bonigarcia.wdm.WebDriverManager;
 import java.util.ArrayList;
 import java.util.List;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
-import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-public class Exercise2 {
-
-    private WebDriver webDriver;
-
-    private WebElement webElement;
-    private final String address = "https://jdi-testing.github.io/jdi-light/index.html";
-
-    private final String login = "Roman";
-    private final String password = "Jdi1234";
-    private final String username = "ROMAN IOVLEV";
+public class Exercise2 extends BaseTest {
 
     List<String> logs = new ArrayList<>();
 
     @BeforeClass
     public void beforeClass() {
-        WebDriverManager.chromedriver().setup();
-        webDriver = new ChromeDriver();
-        webDriver.manage().window().maximize();
-        webDriver.manage().timeouts().getImplicitWaitTimeout();
-
-        //1. Open test site
-        webDriver.navigate().to(address);
-
         //2. Assert Browser title
         webElement = webDriver.findElement(By.tagName("title"));
         Assert.assertEquals("Home Page", webDriver.getTitle());
 
         //3. Perform login
+        //4. Assert User name in the left-top side of screen that user is loggined
         webDriver.findElement(By.className("dropdown-toggle")).isEnabled();
 
         webElement = webDriver.findElements(By.className("dropdown-toggle")).get(1);
         JavascriptExecutor js = (JavascriptExecutor) webDriver;
         js.executeScript("arguments[0].click();", webElement);
 
-        webDriver.findElements(By.id("name")).get(0).sendKeys(login);
-        webDriver.findElements(By.id("password")).get(0).sendKeys(password);
+        webDriver.findElements(By.id(loginNameLocator)).get(0).sendKeys(loginNameTest);
+        webDriver.findElements(By.id(loginPasswordLocator)).get(0).sendKeys(loginPasswordTest);
+        webDriver.findElement(By.id(loginButtonLocator)).click();
+        String actualUserName = webDriver.findElements(By.id(loggedNameLocator)).get(0).getText();
 
-        webDriver.findElement(By.id("login-button")).click();
-
-        //4. Assert Username is loggined
-        String loggedName = webDriver.findElements(By.id("user-name")).get(0).getText();
-
-        Assert.assertEquals(username, loggedName);
-    }
-
-    // Execute all SoftAssert
-    //10. Close Browser
-    @AfterClass
-    public void afterClass() {
-        webDriver.close();
+        Assert.assertEquals(actualUserName, userNameTest);
     }
 
 
@@ -78,10 +48,10 @@ public class Exercise2 {
         //6. Select checkboxes: Water,Wind
         webDriver.findElement(By.xpath("//label[contains(.,'Water')]")).click();
         webDriver.findElement(By.xpath("//label[contains(.,'Wind')]")).click();
-        boolean actual = webDriver.findElement(By.xpath("//label[contains(.,'Water')]")).isEnabled()
+        boolean actualCheckBoxState = webDriver.findElement(By.xpath("//label[contains(.,'Water')]")).isEnabled()
             &&
             webDriver.findElement(By.xpath("//label[contains(.,'Wind')]")).isEnabled();
-        Assert.assertTrue(actual);
+        Assert.assertTrue(actualCheckBoxState);
 
         //7. Select radio: Selen
         webDriver.findElement(By.xpath("//label[contains(.,'Selen')]")).click();

@@ -1,46 +1,11 @@
 package com.epam.tc.hw2.ex1;
 
-import io.github.bonigarcia.wdm.WebDriverManager;
+import com.epam.tc.hw2.BaseTest;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.testng.annotations.AfterClass;
-import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
-import org.testng.asserts.SoftAssert;
 
-public class Exercise1 {
-
-    private WebDriver webDriver;
-    private WebElement webElement;
-    private final String address = "https://jdi-testing.github.io/jdi-light/index.html ";
-
-    private final String login = "Roman";
-    private final String password = "Jdi1234";
-    private final String username = "ROMAN IOVLEV";
-
-    private SoftAssert softAssert = new SoftAssert();
-
-    @BeforeClass
-    public void beforeClass() {
-        WebDriverManager.chromedriver().setup();
-        webDriver = new ChromeDriver();
-        webDriver.manage().window().maximize();
-        webDriver.manage().timeouts().getImplicitWaitTimeout();
-
-        //1. Open test site
-        webDriver.navigate().to(address);
-    }
-
-    // Execute all SoftAssert
-    //10. Close Browser
-    @AfterClass
-    public void afterClass() {
-        softAssert.assertAll();
-        webDriver.close();
-    }
+public class Exercise1 extends BaseTest {
 
     //2. Assert Browser title
     @Test
@@ -60,14 +25,12 @@ public class Exercise1 {
         JavascriptExecutor js = (JavascriptExecutor) webDriver;
         js.executeScript("arguments[0].click();", webElement);
 
-        webDriver.findElements(By.id("name")).get(0).sendKeys(login);
-        webDriver.findElements(By.id("password")).get(0).sendKeys(password);
+        webDriver.findElements(By.id(loginNameLocator)).get(0).sendKeys(loginNameTest);
+        webDriver.findElements(By.id(loginPasswordLocator)).get(0).sendKeys(loginPasswordTest);
+        webDriver.findElement(By.id(loginButtonLocator)).click();
+        String actualUserName = webDriver.findElements(By.id(loggedNameLocator)).get(0).getText();
 
-        webDriver.findElement(By.id("login-button")).click();
-
-        String loggedName = webDriver.findElements(By.id("user-name")).get(0).getText();
-
-        softAssert.assertEquals(username, loggedName);
+        softAssert.assertEquals(actualUserName, userNameTest);
     }
 
     //5. Assert that there are 4 items on the header section are displayed and they have proper texts
@@ -112,6 +75,7 @@ public class Exercise1 {
 
     //8. Assert that there is the iframe with “Frame Button” exist.
     //9. Switch to the iframe and check that there is “Frame Button” in the iframe
+    //10. Switch to original window back
     @Test
     public void frameTest() {
         softAssert.assertEquals(webDriver.findElement(By.id("frame")).isDisplayed(), true);
@@ -122,7 +86,7 @@ public class Exercise1 {
         webDriver.switchTo().defaultContent();
     }
 
-    //10. Assert that there are 5 items in the Left Section are displayed and they have proper text
+    //11. Assert that there are 5 items in the Left Section are displayed and they have proper text
     @Test
     public void leftMenuTextTest() {
 
