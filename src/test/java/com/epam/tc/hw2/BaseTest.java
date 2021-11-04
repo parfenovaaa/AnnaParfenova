@@ -42,7 +42,7 @@ public class BaseTest {
     //12. Close Browser
     @AfterClass
     public void quitDriver() {
-        softAssert.assertAll();
         webDriver.quit();
+        softAssert.assertAll();
     }
 }
