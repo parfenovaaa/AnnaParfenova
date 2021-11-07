@@ -56,6 +56,14 @@
         <suiteXml>${project.basedir}/src/test/resources/com/epam/tc/hw2/Homework2TestSuite.xml</suiteXml>
       </properties>
     </profile>
+
+    <profile>
+      <id>homework3-test-suite</id>
+      <properties>
+        <suiteXml>${project.basedir}/src/test/resources/com/epam/tc/hw3/Homework3TestSuite.xml</suiteXml>
+      </properties>
+    </profile>
+
   </profiles>
 
   <dependencies>
