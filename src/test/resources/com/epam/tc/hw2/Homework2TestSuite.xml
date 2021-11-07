@@ -1,0 +1,17 @@
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd" >
+<suite name="Homework2">
+
+  <test name="Ex1">
+    <classes>
+      <class name="com.epam.tc.hw2.ex1.Exercise1"/>
+      <class name="com.epam.tc.hw2.BaseTest"/>
+    </classes>
+  </test>
+
+  <test name="Ex2">
+    <classes>
+      <class name="com.epam.tc.hw2.ex2.Exercise2"/>
+      <class name="com.epam.tc.hw2.BaseTest"/>
+    </classes>
+  </test>
+</suite>
