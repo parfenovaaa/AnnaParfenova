@@ -55,10 +55,11 @@ public class IndexPage {
     }
 
     public String[] getImagesText() {
+
         return new String[] {imgtext.get(0).getText(),
             imgtext.get(1).getText(),
             imgtext.get(2).getText(),
-            imgtext.get(3).getText()};
+            imgtext.get(3).getText().replaceAll("…", "...")};
     }
 
     public boolean frameExist() {

@@ -45,7 +45,7 @@ public class ElementsPage {
 
     Select dropdown;
 
-    String hourRegExp = "\\b[0-2]?\\d:[0-5]\\d\\b:[0-5]\\d\\b";
+    String hourRegExp = "\\b[0-2]?\\d:[0-5]\\d\\b:[0-5]\\d\\b ";
 
     public ElementsPage(WebDriver driver) {
         this.webDriver = driver;
@@ -69,7 +69,7 @@ public class ElementsPage {
         dropdown = new Select(select);
         dropdown.selectByVisibleText("Yellow");
         return logScreen.getText().replaceAll(hourRegExp, "")
-                          .equals(" Colors: value changed to Yellow");
+                          .equals("Colors: value changed to Yellow");
     }
 
 

@@ -4,96 +4,44 @@ import com.epam.tc.hw3.BaseTest;
 import com.epam.tc.hw3.components.IndexPage;
 import com.epam.tc.hw3.components.LoginMenu;
 import org.testng.Assert;
-import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 public class Exercise1 extends BaseTest {
 
-    @DataProvider(name = "titleDataProvider")
-    public Object[][] titleDataProvider() {
-        return new Object[][] {
-            {"Home Page"}};
-    }
+    @Test
+    public void exerciseOneTest() {
 
-    @Test(dataProvider = "titleDataProvider")
-    public void titleTest(String expected) {
+        //2. Assert Browser title
         IndexPage indexPage = new IndexPage(webDriver);
-        String actual = indexPage.getPageTitle();
-        Assert.assertEquals(actual, expected);
-    }
-
-    @DataProvider(name = "userNameDataProvider")
-    public Object[][] userNameDataProvider() {
-        return new Object[][] {
-            {"ROMAN IOVLEV"}};
-    }
-
-    @Test(dataProvider = "userNameDataProvider")
-    public void loginTest(String expected) {
+        String actualTitle = indexPage.getPageTitle();
+        Assert.assertEquals(actualTitle, title);
+        //3. Perform login
         LoginMenu loginMenu = new LoginMenu(webDriver);
         loginMenu.loginUser();
-        String actual = loginMenu.getUserName();
-        Assert.assertEquals(actual, expected);
-    }
+        //4. Assert Username is loggined
+        String actualUserName = loginMenu.getUserName();
+        Assert.assertEquals(actualUserName, userName);
 
-    @DataProvider(name = "leftMenuDataProvider")
-    public Object[][] leftMenuDataProvider() {
-        return new Object[][] {
-            {"Home", "Contact form", "Service", "Metals & Colors", "Elements packs"}};
-    }
+        //5. Assert that there are 4 items on the header section are displayed and they have proper texts
+        String[] actualLeftMenu = indexPage.getLeftMenuText();
+        Assert.assertEquals(actualLeftMenu, leftMenuData);
 
-    @Test(dataProvider = "leftMenuDataProvider")
-    public void leftMenuTest(String[] expected) {
-        IndexPage indexPage = new IndexPage(webDriver);
-        String[] actual = indexPage.getLeftMenuText();
-        Assert.assertEquals(actual, expected);
-    }
-
-    @Test
-    public void imagesTest() {
-        IndexPage indexPage = new IndexPage(webDriver);
+        //6. Assert that there are 4 images on the Index Page and they are displayed
         Assert.assertTrue(indexPage.imagesDisplayed());
-    }
 
-    @DataProvider(name = "imagesTextsDataProvider")
-    public Object[][] imagesTextsProvider() {
-        return new Object[][] {
-            {"To include good practices\nand ideas from successful\nEPAM project",
-                "To be flexible and\ncustomizable",
-                "To be multiplatform",
-                "Already have good base\n(about 20 internal and\nsome external projects),\nwish to get more…"}};
-    }
+        //7. Assert that there are 4 texts on the Index Page under icons and they have proper text
+        String[] actualImgTexts = indexPage.getImagesText();
+        Assert.assertEquals(actualImgTexts, imgTextsData);
 
-    @Test(dataProvider = "imagesTextsDataProvider")
-    public void imagesTextsTest(String[] expected) {
-        IndexPage indexPage = new IndexPage(webDriver);
-        String[] actual = indexPage.getImagesText();
-        Assert.assertEquals(actual, expected);
-    }
-
-    @Test
-    public void frameTest() {
-        IndexPage indexPage = new IndexPage(webDriver);
+        //8. Assert that there is the iframe with “Frame Button” exist
         Assert.assertTrue(indexPage.frameExist());
-    }
-
-    @Test
-    public void frameButtonTest() {
-        IndexPage indexPage = new IndexPage(webDriver);
+        //9. Switch to the iframe and check that there is “Frame Button” in the iframe
         Assert.assertTrue(indexPage.frameButtonExist());
-    }
 
-    @DataProvider(name = "topMenuDataProvider")
-    public Object[][] topMenuDataProvider() {
-        return new Object[][] {
-            {"HOME", "CONTACT FORM", "SERVICE", "METALS & COLORS"}};
-    }
+        //10. Assert that there are 5 items in the Left Section are displayed and they have proper text
+        String[] actualTopMenu = indexPage.getTopMenuText();
+        Assert.assertEquals(actualTopMenu, topMenuData);
 
-    @Test(dataProvider = "topMenuDataProvider")
-    public void topMenuTest(String[] expected) {
-        IndexPage indexPage = new IndexPage(webDriver);
-        String[] actual = indexPage.getTopMenuText();
-        Assert.assertEquals(actual, expected);
     }
 
 }
