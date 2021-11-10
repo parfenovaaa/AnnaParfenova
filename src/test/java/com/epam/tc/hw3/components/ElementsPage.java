@@ -8,111 +8,101 @@ import org.openqa.selenium.support.ui.Select;
 
 public class ElementsPage {
 
-    WebDriver webDriver;
-
     //CheckBox Select
     @FindBy(xpath = "//label[contains(., 'Water')]/input")
-    WebElement waterCheckBox;
+    private WebElement waterCheckBox;
 
     @FindBy(xpath = "//label[contains(., 'Wind')]/input")
-    WebElement windCheckBox;
+    private WebElement windCheckBox;
 
     @FindBy(xpath = "//label[contains(., 'Earth')]/input")
-    WebElement earthCheckBox;
+    private WebElement earthCheckBox;
 
     @FindBy(xpath = "//label[contains(., 'Fire')]/input")
-    WebElement fireCheckBox;
+    private WebElement fireCheckBox;
 
     //Radio Select
     @FindBy(xpath = "//label[contains(., 'Silver')]/input")
-    WebElement silverRadio;
+    private WebElement silverRadio;
 
     @FindBy(xpath = "//label[contains(., 'Gold')]/input")
-    WebElement goldRadio;
+    private WebElement goldRadio;
     @FindBy(xpath = "//label[contains(., 'Bronze')]/input")
-    WebElement bronzeRadio;
+    private WebElement bronzeRadio;
 
     @FindBy(xpath = "//label[contains(., 'Selen')]/input")
-    WebElement selenRadio;
+    private WebElement selenRadio;
 
     //Log
     @FindBy(className = "panel-body-list")
-    WebElement logScreen;
+    private WebElement logScreen;
 
     //Dropdown Select
     @FindBy(css = "select.uui-form-element")
-    WebElement select;
+    private WebElement select;
 
-    Select dropdown;
+    private Select dropdown;
 
     String hourRegExp = "\\b[0-2]?\\d:[0-5]\\d\\b:[0-5]\\d\\b";
 
     public ElementsPage(WebDriver driver) {
-        this.webDriver = driver;
         PageFactory.initElements(driver, this);
     }
 
-    public boolean selectWaterWindCheckBox() {
-        waterCheckBox.click();
-        windCheckBox.click();
-        return (waterCheckBox.isSelected() && windCheckBox.isSelected());
-    }
-
-    public boolean selectSelenRadio() {
-        selenRadio.click();
-
-        return selenRadio.isSelected();
-    }
-
-    public boolean selectYellowDropdown() {
-        webDriver.navigate().to(webDriver.getCurrentUrl());
+    public void selectDropdownByVisibleText(String colour) {
         dropdown = new Select(select);
-        dropdown.selectByVisibleText("Yellow");
-        return logScreen.getText().replaceAll(hourRegExp, "")
-                          .equals(" Colors: value changed to Yellow");
+        dropdown.selectByVisibleText(colour);
     }
 
-
-    public String[] getLogCheckBox() {
-        webDriver.navigate().to(webDriver.getCurrentUrl());
-        waterCheckBox.click();
-        windCheckBox.click();
-        earthCheckBox.click();
-        fireCheckBox.click();
-
-        waterCheckBox.click();
-        windCheckBox.click();
-        earthCheckBox.click();
-        fireCheckBox.click();
-
+    public String[] getLog() {
         return logScreen.getText()
-                  .replaceAll(hourRegExp, "")
-                  .split("\n");
+                        .replaceAll(hourRegExp, "")
+                        .split("\n");
     }
 
-    public String[] getLogRadio() {
-        webDriver.navigate().to(webDriver.getCurrentUrl());
-        silverRadio.click();
-        goldRadio.click();
-        bronzeRadio.click();
-        selenRadio.click();
-
-        return logScreen.getText()
-                  .replaceAll(hourRegExp, "")
-                  .split("\n");
+    public void clickOn(String name, int count) {
+        WebElement webElement = getWebElementByName(name);
+        for (int i = 0; i < count; i++) {
+            webElement.click();
+        }
     }
 
-    public String[] getLogDropdown() {
-        webDriver.navigate().to(webDriver.getCurrentUrl());
-        dropdown = new Select(select);
-        dropdown.selectByVisibleText("Green");
-        dropdown.selectByVisibleText("Yellow");
-        dropdown.selectByVisibleText("Red");
-        dropdown.selectByVisibleText("Blue");
+    public boolean selectedWebElement(String name) {
+        WebElement webElement = getWebElementByName(name);
+        return webElement.isSelected();
+    }
 
-        return logScreen.getText()
-                  .replaceAll(hourRegExp, "")
-                  .split("\n");
+    private WebElement getWebElementByName(String name) throws IllegalArgumentException {
+        WebElement webElement;
+        switch (name) {
+            case  ("Wind"):
+                webElement = windCheckBox;
+                break;
+            case  ("Water"):
+                webElement = waterCheckBox;
+                break;
+            case  ("Fire"):
+                webElement = fireCheckBox;
+                break;
+            case  ("Earth"):
+                webElement = earthCheckBox;
+                break;
+            case  ("Silver"):
+                webElement = silverRadio;
+                break;
+            case  ("Gold"):
+                webElement = goldRadio;
+                break;
+            case  ("Bronze"):
+                webElement = bronzeRadio;
+                break;
+            case  ("Selen"):
+                webElement = selenRadio;
+                break;
+            default:
+                throw new IllegalArgumentException("No such element.");
+        }
+        return webElement;
     }
 
 }

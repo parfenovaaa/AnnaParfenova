@@ -8,33 +8,33 @@ import org.openqa.selenium.support.PageFactory;
 
 public class IndexPage {
 
-    WebDriver driver;
+    private final WebDriver driver;
 
     @FindBy(css = "div.mCSB_container")
-    List<WebElement> leftMenu;
+    private List<WebElement> leftMenu;
 
     @FindBy(xpath = "//span[@class='icons-benefit icon-practise']")
-    WebElement img1;
+    private WebElement img1;
     @FindBy(xpath = "//span[@class='icons-benefit icon-custom']")
-    WebElement img3;
+    private WebElement img3;
     @FindBy(xpath = "//span[@class='icons-benefit icon-multi']")
-    WebElement img2;
+    private WebElement img2;
     @FindBy(xpath = "//span[@class='icons-benefit icon-base']")
-    WebElement img4;
+    private WebElement img4;
     @FindBy(xpath = "//span[@class='benefit-txt']")
-    List<WebElement> imgtext;
+    private List<WebElement> imgtext;
 
     @FindBy(id = "frame")
-    WebElement frame;
+    private WebElement frame;
     @FindBy(id = "frame-button")
-    WebElement frameButton;
+    private WebElement frameButton;
 
     @FindBy(css = "ul.m-l8")
-    WebElement topMenu;
+    private WebElement topMenu;
     @FindBy(xpath = "//li[@class = 'dropdown']")
-    WebElement serviceButton;
+    private WebElement serviceButton;
     @FindBy(xpath = "//a[@href='different-elements.html']")
-    WebElement elementsPageButton;
+    private WebElement elementsPageButton;
 
     public IndexPage(WebDriver driver) {
         this.driver = driver;
