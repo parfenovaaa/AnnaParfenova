@@ -3,29 +3,15 @@ package com.epam.tc.hw4.ex1;
 import com.epam.tc.hw4.BaseTest;
 import com.epam.tc.hw4.GetProperties;
 import com.epam.tc.hw4.TestData;
-import com.epam.tc.hw4.TestListener;
 import com.epam.tc.hw4.components.IndexPage;
 import com.epam.tc.hw4.components.LoginMenu;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Story;
 import org.testng.Assert;
-import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
-@Listeners({ TestListener.class })
 public class Exercise1 extends BaseTest {
-
-    @Test
-    @Epic("Epam training")
-    @Feature("Homework 4")
-    @Story("Login fail test")
-    public void loginFailTest() {
-        LoginMenu loginMenu = new LoginMenu(webDriver);
-        loginMenu.loginUser(" ", " ");
-        String actualUserName = loginMenu.getUserName();
-        Assert.assertEquals(actualUserName, TestData.userName);
-    }
 
     @Test
     @Epic("Epam training")
