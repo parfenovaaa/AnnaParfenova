@@ -5,6 +5,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+import org.testng.Assert;
 import org.testng.ITestListener;
 
 public class LoginMenu implements ITestListener {
@@ -30,6 +31,8 @@ public class LoginMenu implements ITestListener {
         nameElement.sendKeys(login);
         passwordElement.sendKeys(password);
         loginButton.click();
+
+        Assert.assertFalse(userName.getText().isEmpty());
     }
 
     @Step("Get logged user name.")
