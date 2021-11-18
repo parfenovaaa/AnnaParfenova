@@ -8,8 +8,14 @@ import org.testng.Assert;
 
 public class ElementsPageStep extends AbstractBaseSteps {
 
-    @And("4 {string} should contain following values in {string} section on Elements Page:")
+    @And("4 {string} should contain following values in radio section on Elements Page:")
     public void checkboxesShouldBeContainValuesOnElementsPage(String name, String rowName, List<String> arg) {
+        Assert.assertTrue(elementsPage.webElementsDisplayed(name));
+        Assert.assertEquals(elementsPage.getRowText(name), deleteFirstRaw(arg));
+    }
+
+    @And("4 {string} should contain following values in checkboxes section on Elements Page:")
+    public void radioShouldBeContainValuesOnElementsPage(String name, String rowName, List<String> arg) {
         Assert.assertTrue(elementsPage.webElementsDisplayed(name));
         Assert.assertEquals(elementsPage.getRowText(name), deleteFirstRaw(arg));
     }
@@ -20,13 +26,23 @@ public class ElementsPageStep extends AbstractBaseSteps {
         Assert.assertEquals(elementsPage.getDropdownOptions(), deleteFirstRaw(arg));
     }
 
-    @When("I click on {string} in {string} section on the Elements Page")
-    public void clickOnCheckbox(String name, String rowName) {
+    @When("I click on {string} in radio section on the Elements Page")
+    public void clickOnCheckbox(String name) {
         elementsPage.clickOn(name);
     }
 
-    @Then("{string} should be displayed as selected in {string} section on the Elements Page")
-    public void inputDisplayedAsSelected(String name, String rowName) {
+    @When("I click on {string} in checkboxes section on the Elements Page")
+    public void clickOnRadio(String name) {
+        elementsPage.clickOn(name);
+    }
+
+    @Then("{string} should be displayed as selected in checkboxes section on the Elements Page")
+    public void checkboxDisplayedAsSelected(String name) {
+        Assert.assertTrue(elementsPage.selectedWebElement(name));
+    }
+
+    @Then("{string} should be displayed as selected in radio section on the Elements Page")
+    public void radioDisplayedAsSelected(String name) {
         Assert.assertTrue(elementsPage.selectedWebElement(name));
     }
 
