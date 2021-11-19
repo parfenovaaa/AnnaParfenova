@@ -9,13 +9,13 @@ import org.testng.Assert;
 public class ElementsPageStep extends AbstractBaseSteps {
 
     @And("4 {string} should contain following values in radio section on Elements Page:")
-    public void checkboxesShouldBeContainValuesOnElementsPage(String name, String rowName, List<String> arg) {
+    public void checkboxesShouldBeContainValuesOnElementsPage(String name, List<String> arg) {
         Assert.assertTrue(elementsPage.webElementsDisplayed(name));
         Assert.assertEquals(elementsPage.getRowText(name), deleteFirstRaw(arg));
     }
 
     @And("4 {string} should contain following values in checkboxes section on Elements Page:")
-    public void radioShouldBeContainValuesOnElementsPage(String name, String rowName, List<String> arg) {
+    public void radioShouldBeContainValuesOnElementsPage(String name, List<String> arg) {
         Assert.assertTrue(elementsPage.webElementsDisplayed(name));
         Assert.assertEquals(elementsPage.getRowText(name), deleteFirstRaw(arg));
     }
