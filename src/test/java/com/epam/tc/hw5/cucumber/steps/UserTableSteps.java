@@ -9,26 +9,6 @@ import org.testng.Assert;
 
 public class UserTableSteps extends AbstractBaseSteps {
 
-    /*@And("6 Number Type Dropdowns should be displayed on Users Table on User Table Page")
-    public void dropdownShouldBeDisplayed() {
-        Assert.assertTrue(userTablePage.sixElementsExist("dropdown"));
-    }
-
-    @And("6 Usernames should be displayed on Users Table on User Table Page")
-    public void usernamesShouldBeDisplayed() {
-        Assert.assertTrue(userTablePage.sixElementsExist("usernames"));
-    }
-
-    @And("6 Description texts under images should be displayed on Users Table on User Table Page")
-    public void descriptionShouldBeDisplayed() {
-        Assert.assertTrue(userTablePage.sixElementsExist("descriptions"));
-    }
-
-    @And("6 checkboxes should be displayed on Users Table on User Table Page")
-    public void checkboxesShouldBeDisplayed() {
-        Assert.assertTrue(userTablePage.sixElementsExist("checkboxes"));
-    }*/
-
     @And("6 {string} should be displayed on Users Table on User Table Page")
     public void sixSomethingShouldBeDisplayed(String name) {
         switch (name) {
