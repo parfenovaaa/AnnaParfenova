@@ -26,6 +26,11 @@
     <aspectj.version>1.9.5</aspectj.version>
     <allure.version>2.14.0</allure.version>
 
+    <jdi.version>1.1.34</jdi.version>
+    <json-simple.version>1.1.1</json-simple.version>
+    <driver>chrome</driver>
+    <domain>https://jdi-testing.github.io/jdi-light/</domain>
+
   </properties>
 
   <profiles>
@@ -71,6 +76,13 @@
       <id>homework4-test-suite</id>
       <properties>
         <suiteXml>${project.basedir}/src/test/resources/com/epam/tc/hw4/Homework4TestSuite.xml</suiteXml>
+      </properties>
+    </profile>
+
+    <profile>
+      <id>homework7-test-suite</id>
+      <properties>
+        <suiteXml>${project.basedir}/src/test/resources/com/epam/tc/hw7/Homework7TestSuite.xml</suiteXml>
       </properties>
     </profile>
 
@@ -123,6 +135,18 @@
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-simple</artifactId>
       <version>1.7.32</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.epam.jdi</groupId>
+      <artifactId>jdi-light-html</artifactId>
+      <version>RELEASE</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.googlecode.json-simple</groupId>
+      <artifactId>json-simple</artifactId>
+      <version>${json-simple.version}</version>
     </dependency>
 
   </dependencies>
