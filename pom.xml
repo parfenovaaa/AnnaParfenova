@@ -26,6 +26,8 @@
     <aspectj.version>1.9.5</aspectj.version>
     <allure.version>2.14.0</allure.version>
 
+    <cucumber-java.version>7.0.0</cucumber-java.version>
+
   </properties>
 
   <profiles>
@@ -73,7 +75,14 @@
         <suiteXml>${project.basedir}/src/test/resources/com/epam/tc/hw4/Homework4TestSuite.xml</suiteXml>
       </properties>
     </profile>
-
+    
+    <profile>
+      <id>homework5-cucumber-test-suite</id>
+      <properties>
+        <suiteXml>${project.basedir}/src/test/resources/com/epam/tc/hw5/CucumberTestSuite.xml</suiteXml>
+      </properties>
+    </profile>
+   
     <profile>
       <id>homework6-test-suite</id>
       <properties>
@@ -130,6 +139,18 @@
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-simple</artifactId>
       <version>1.7.32</version>
+    </dependency>
+
+    <dependency>
+      <groupId>io.cucumber</groupId>
+      <artifactId>cucumber-testng</artifactId>
+      <version>${cucumber-java.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>io.cucumber</groupId>
+      <artifactId>cucumber-java</artifactId>
+      <version>${cucumber-java.version}</version>
     </dependency>
 
   </dependencies>
