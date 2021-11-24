@@ -1,0 +1,443 @@
+{
+	"info": {
+		"_postman_id": "183465f5-e89f-4854-926c-8a616ac64f96",
+		"name": "2021-ParefenovaAnna",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Create a new board",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.collectionVariables.set(\r",
+							"    \"boardName\",\r",
+							"    pm.collectionVariables.replaceIn('{{$randomCity}}')\r",
+							");\r",
+							"pm.collectionVariables.set(\r",
+							"    \"boardDesc\",\r",
+							"    pm.collectionVariables.replaceIn('{{$randomPhrase}}')\r",
+							");"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"  pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"const jsonData = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Board name in response equal to name in request \", () => {\r",
+							"  var actual = jsonData.name;\r",
+							"  var expected = pm.collectionVariables.get(\"boardName\");\r",
+							"  pm.expect(actual).to.eql(expected);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Board description in response equal to name in request \", () => {\r",
+							"  var actual = jsonData.desc;\r",
+							"  var expected = pm.collectionVariables.get(\"boardDesc\");\r",
+							"  pm.expect(actual).to.eql(expected);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response have body and json\", function () {\r",
+							"     pm.response.to.be.withBody;\r",
+							"     pm.response.to.be.json;\r",
+							"});\r",
+							"\r",
+							"pm.collectionVariables.set(\"boardId\", jsonData.id); \r",
+							"\r",
+							"pm.collectionVariables.set(\"boardStartName\", jsonData.name); \r",
+							"\r",
+							"pm.collectionVariables.set(\"boardStartDesc\", jsonData.desc); "
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "https://{{baseUrl}}/1/boards/?name={{boardName}}&desc={{boardDesc}}",
+					"protocol": "https",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"1",
+						"boards",
+						""
+					],
+					"query": [
+						{
+							"key": "name",
+							"value": "{{boardName}}"
+						},
+						{
+							"key": "desc",
+							"value": "{{boardDesc}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Chande board name, desc and background color",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.collectionVariables.set(\r",
+							"    \"boardDesc\",\r",
+							"    pm.collectionVariables.replaceIn('{{$randomPhrase}}')\r",
+							");\r",
+							"pm.collectionVariables.set(\r",
+							"    \"boardName\",\r",
+							"    pm.collectionVariables.replaceIn('{{$randomWord}}')\r",
+							");\r",
+							"\r",
+							"pm.collectionVariables.set(\"backgroundColour\", \"pink\");\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"  pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response have body and json\", function () {\r",
+							"     pm.response.to.be.withBody;\r",
+							"     pm.response.to.be.json;\r",
+							"});\r",
+							"\r",
+							"const jsonData = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Board id exist in response \", () => {\r",
+							"  pm.response.to.have.jsonBody(\"id\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Board id equal to id in request \", () => {\r",
+							"  var actual = jsonData.id;\r",
+							"  var expected = pm.collectionVariables.get(\"boardId\");\r",
+							"  pm.expect(actual).to.eql(expected);\r",
+							"});\r",
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "https://{{baseUrl}}/1/boards/{{boardId}}?name={{boardName}}&desc={{boardDesc}}&prefs/background={{backgroundColour}}",
+					"protocol": "https",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"1",
+						"boards",
+						"{{boardId}}"
+					],
+					"query": [
+						{
+							"key": "name",
+							"value": "{{boardName}}"
+						},
+						{
+							"key": "desc",
+							"value": "{{boardDesc}}"
+						},
+						{
+							"key": "prefs/background",
+							"value": "{{backgroundColour}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get updated board",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"  pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"const jsonData = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Board id equal to id in request \", () => {\r",
+							"  var actual = jsonData.id;\r",
+							"  var expected = pm.collectionVariables.get(\"boardId\");\r",
+							"  pm.expect(actual).to.eql(expected);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Board name in response not equal to previous board name\", () => {\r",
+							"  var actual = jsonData.name;\r",
+							"  var expected = pm.collectionVariables.get(\"boardStartName\");\r",
+							"  pm.expect(actual).to.not.eql(expected);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Board description in response not equal to previous board desc\", () => {\r",
+							"  var actual = jsonData.desc;\r",
+							"  var expected = pm.collectionVariables.get(\"boardStartDesc\");\r",
+							"  pm.expect(actual).to.not.eql(expected);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Board background in response equal to board background in req\", () => {\r",
+							"  var actual = jsonData.prefs.background;\r",
+							"  var expected = pm.collectionVariables.get(\"backgroundColour\");\r",
+							"  pm.expect(actual).to.eql(expected);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://{{baseUrl}}/1/boards/{{boardId}}",
+					"protocol": "https",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"1",
+						"boards",
+						"{{boardId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete board",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"  pm.response.to.have.status(200);\r",
+							"});\r",
+							"const jsonData = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Response body have to be json \", () => {\r",
+							"  pm.response.to.have.json; \r",
+							"});\r",
+							"\r",
+							"pm.test(\"json data have to be null \", () => {\r",
+							"  var actual = jsonData._value;\r",
+							"  pm.expect(actual).to.be.null;\r",
+							"});\r",
+							"\r",
+							"pm.test(\"response json data should not have errors\", function () {\r",
+							"    pm.response.to.have.jsonBody();\r",
+							"    pm.response.to.not.have.jsonBody('error');\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "This is expected to be sent back as part of response body."
+				},
+				"url": {
+					"raw": "https://{{baseUrl}}/1/boards/{{boardId}}",
+					"protocol": "https",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"1",
+						"boards",
+						"{{boardId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Try get deleted board",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 404\", function () {\r",
+							"  pm.response.to.have.status(404);\r",
+							"  pm.response.to.have.status(\"Not Found\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response body have no json body \", function () {\r",
+							"    pm.response.to.not.have.jsonBody(); \r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response Content-type is text \", function () {\r",
+							"    pm.response.to.have.header(\"Content-Type\", \"text/plain; charset=utf-8\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response body has string: The requested resource was not found. \", () => {\r",
+							"  responseBody.has(\"The requested resource was not found.\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://{{baseUrl}}/1/boards/{{boardId}}",
+					"protocol": "https",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"1",
+						"boards",
+						"{{boardId}}"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "oauth1",
+		"oauth1": [
+			{
+				"key": "consumerSecret",
+				"value": "{{cunsumerSecret}}",
+				"type": "string"
+			},
+			{
+				"key": "token",
+				"value": "{{token}}",
+				"type": "string"
+			},
+			{
+				"key": "consumerKey",
+				"value": "{{consumerKey}}",
+				"type": "string"
+			},
+			{
+				"key": "signatureMethod",
+				"value": "HMAC-SHA1",
+				"type": "string"
+			},
+			{
+				"key": "version",
+				"value": "1.0",
+				"type": "string"
+			},
+			{
+				"key": "addParamsToHeader",
+				"value": false,
+				"type": "boolean"
+			},
+			{
+				"key": "addEmptyParamsToSign",
+				"value": false,
+				"type": "boolean"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"pm.collectionVariables.set(\"baseUrl\", \"api.trello.com\");",
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "boardName",
+			"value": ""
+		},
+		{
+			"key": "boardId",
+			"value": ""
+		},
+		{
+			"key": "consumerKey",
+			"value": "3c8f7e2685e53302c46e05c6627eb77e"
+		},
+		{
+			"key": "token",
+			"value": "836258658c7d9f85177ac33394d8532eb97bae410d2490f70ddeff67280bb66d"
+		},
+		{
+			"key": "baseUrl",
+			"value": ""
+		},
+		{
+			"key": "cunsumerSecret",
+			"value": "dcfcb0f6cc43d508ba9d55484d17e8ffa6370eda0b3e1a542e25ad5ef5031768"
+		},
+		{
+			"key": "randomDesc",
+			"value": ""
+		},
+		{
+			"key": "boardStartName",
+			"value": ""
+		},
+		{
+			"key": "boardStartDesc",
+			"value": ""
+		},
+		{
+			"key": "backgroundColour",
+			"value": ""
+		},
+		{
+			"key": "boardDesc",
+			"value": ""
+		}
+	]
+}
