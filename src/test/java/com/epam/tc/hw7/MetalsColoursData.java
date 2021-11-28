@@ -4,18 +4,21 @@ import com.jdiai.tools.DataClass;
 import java.util.Arrays;
 
 public class MetalsColoursData extends DataClass<MetalsColoursData> {
-    public long[] summary;
+    public String odd;
+    public String even;
     public String[] elements;
     public String color;
     public String metal;
     public String[] vegetables;
 
-    public int getSum(long[] summary) {
-        return (int) (summary[0] + summary[1]);
+    public int getSum(String odd, String even) {
+        return (Integer.parseInt(odd) + Integer.parseInt(even));
     }
 
-    public MetalsColoursData set(long[] summary, String[] elements, String color, String metal, String[] vegetables) {
-        this.summary = summary;
+    public MetalsColoursData set(String odd, String even, String[] elements, String color, String metal,
+                                 String[] vegetables) {
+        this.odd = odd;
+        this.even = even;
         this.elements = elements;
         this.color = color;
         this.metal = metal;
@@ -24,10 +27,13 @@ public class MetalsColoursData extends DataClass<MetalsColoursData> {
     }
 
     public String getDataInLine() {
-        return "Summary: " + getSum(summary)
-            + "\nElements: " + Arrays.toString(elements)
-            + "\nColor: " + color
-            + "\nMetal: " + metal
-            + "\nVegetables: " + Arrays.toString(vegetables);
+        String fullLine = "Summary: " + getSum(odd, even)
+                        + "\nElements: " + Arrays.toString(elements)
+                        + "\nColor: " + color
+                        + "\nMetal: " + metal
+                        + "\nVegetables: " + Arrays.toString(vegetables);
+        String regex = "[\\p{Ps}\\p{Pe}]";
+
+        return fullLine.replaceAll(regex, "");
     }
 }

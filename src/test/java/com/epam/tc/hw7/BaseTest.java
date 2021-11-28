@@ -24,12 +24,6 @@ import com.epam.jdi.light.elements.composite.WebPage;
 import com.epam.tc.hw7.ententies.LoginUserData;
 import com.epam.tc.hw7.site.SiteJdi;
 import io.qameta.allure.Step;
-import java.io.FileReader;
-import java.io.IOException;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 import org.testng.Assert;
 import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeSuite;
@@ -50,6 +44,7 @@ public class BaseTest {
 
     @Test
     public void loginTest() {
+        homePage.isOpened();
         shouldBeLoggedOut();
         userIcon.click();
         loginForm.loginAs(new LoginUserData());
@@ -57,54 +52,25 @@ public class BaseTest {
     }
 
     @Test
-    public void metalsColoursPageTest() throws IOException, ParseException {
+    public void metalsColoursPageTest() {
         shouldBeLoggedIn();
         topMenu.select(MetalsColors);
         metalsColoursPage.shouldBeOpened();
+        ReadTestDataFromJson dataFromJson = new ReadTestDataFromJson();
         for (int i = 1; i < 6; i++) {
-            MetalsColoursData testData = readJsonToMetalsColoursData(i);
+
+            MetalsColoursData testData = dataFromJson.readJsonToMetalsColoursData(i);
             enterTestDataOnMetalsColorsPage(testData);
-            String regex = "[\\p{Ps}\\p{Pe}]";
-            String expected = testData.getDataInLine().replaceAll(regex, "");
+
+            String expected = testData.getDataInLine();
             assertData(getResultTextData(), expected);
             WebPage.refresh();
         }
     }
 
     @Step("Assert data.")
-
     public void assertData(String actual, String expected) {
         Assert.assertEquals(actual, expected);
-    }
-
-    public MetalsColoursData  readJsonToMetalsColoursData(int j) throws IOException, ParseException {
-
-        String fileName = "src/test/resources/JDI_ex8_metalsColorsDataSet.json";
-        JSONObject jsonObject = (JSONObject) new JSONParser().parse(new FileReader(fileName));
-
-        JSONObject data = (JSONObject) jsonObject.get("data_" + j);
-
-        JSONArray summaryArray = (JSONArray) data.get("summary");
-        long[] summary = new long[summaryArray.size()];
-        for (int i = 0; i < summary.length; i++) {
-            summary[i] = (long) summaryArray.get(i);
-        }
-        JSONArray elementsArray = (JSONArray) data.get("elements");
-        String[] elements = new String[elementsArray.size()];
-        for (int i = 0; i < elements.length; i++) {
-            elements[i] = (String) elementsArray.get(i);
-        }
-        JSONArray vegetablesArray = (JSONArray) data.get("vegetables");
-        String[] vegetables = new String[vegetablesArray.size()];
-        for (int i = 0; i < vegetables.length; i++) {
-            vegetables[i] = (String) vegetablesArray.get(i);
-        }
-        String color = (String) data.get("color");
-        String metal = (String) data.get("metals");
-
-        MetalsColoursData metalsColoursData = new MetalsColoursData();
-
-        return metalsColoursData.set(summary, elements, color, metal, vegetables);
     }
 
     public String getResultTextData() {
@@ -113,27 +79,14 @@ public class BaseTest {
 
     public void enterTestDataOnMetalsColorsPage(MetalsColoursData testData) {
 
-        long[] summery = testData.summary;
-        for (long element : summery) {
-            if (element % 2 == 0) {
-                if (evenRadioButtons.selected(String.valueOf(element))) {
-                    continue;
-                } else {
-                    evenRadioButtons.select(String.valueOf(element));
-                }
-            } else {
-                if (oddRadioButtons.selected(String.valueOf(element))) {
-                    continue;
-                } else {
-                    oddRadioButtons.select(String.valueOf(element));
-                }
-            }
-        }
+        String oddNumber = testData.odd;
+        oddRadioButtons.select(oddNumber);
+
+        String evenNumber = testData.even;
+        evenRadioButtons.select(evenNumber);
 
         String[] elements = testData.elements;
-        for (String element : elements) {
-            elementsCheckList.select(element);
-        }
+        elementsCheckList.select(elements);
 
         String color = testData.color;
         colourDropdown.expand();
@@ -142,10 +95,7 @@ public class BaseTest {
         String[] vegetables = testData.vegetables;
         vegetablesDropdown.expand();
         vegetablesDropdown.setValue("vegetables");
-
-        for (String element : vegetables) {
-            vegetablesDropdown.setValue(element);
-        }
+        vegetablesDropdown.select(vegetables);
 
         String metal = testData.metal;
         metalsDropdown.expand();
