@@ -11,18 +11,32 @@ public class MetalsColoursData extends DataClass<MetalsColoursData> {
     public String metal;
     public String[] vegetables;
 
-    public int getSum(String odd, String even) {
-        return (Integer.parseInt(odd) + Integer.parseInt(even));
+    public void setOdd(String odd) {
+        this.odd = odd;
     }
 
-    public MetalsColoursData(String odd, String even, String elements, String color, String metal,
-                             String vegetables) {
-        this.odd = odd;
+    public void setEven(String even) {
         this.even = even;
+    }
+
+    public void setElements(String elements) {
         this.elements = elements.split(", ");
+    }
+
+    public void setColor(String color) {
         this.color = color;
+    }
+
+    public void setMetal(String metal) {
         this.metal = metal;
+    }
+
+    public void setVegetables(String vegetables) {
         this.vegetables = vegetables.split(", ");
+    }
+
+    public int getSum(String odd, String even) {
+        return (Integer.parseInt(odd) + Integer.parseInt(even));
     }
 
     public String getDataInLine() {

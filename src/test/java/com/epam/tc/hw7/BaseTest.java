@@ -52,16 +52,15 @@ public class BaseTest {
     }
 
     @Test(dataProvider = "readJsonToMetalsColoursData", dataProviderClass = ReadTestDataFromJson.class)
-    public void metalsColoursPageTest(String odd, String even, String elements, String color, String metal,
-                                      String vegetables) {
+    public void metalsColoursPageTest(MetalsColoursData metalsColoursData) {
         shouldBeLoggedIn();
         topMenu.select(MetalsColors);
         metalsColoursPage.shouldBeOpened();
 
-        MetalsColoursData testData = new MetalsColoursData(odd, even, elements, color, metal, vegetables);
-        enterTestDataOnMetalsColorsPage(testData);
+        System.out.println(metalsColoursData);
+        enterTestDataOnMetalsColorsPage(metalsColoursData);
 
-        String expected = testData.getDataInLine();
+        String expected = metalsColoursData.getDataInLine();
         assertData(getResultTextData(), expected);
         WebPage.refresh();
     }
@@ -77,11 +76,8 @@ public class BaseTest {
 
     public void enterTestDataOnMetalsColorsPage(MetalsColoursData testData) {
 
-        String oddNumber = testData.odd;
-        oddRadioButtons.select(oddNumber);
-
-        String evenNumber = testData.even;
-        evenRadioButtons.select(evenNumber);
+        oddRadioButtons.select(testData.odd);
+        evenRadioButtons.select(testData.even);
 
         String[] elements = testData.elements;
         elementsCheckList.select(elements);

@@ -16,18 +16,20 @@ public class ReadTestDataFromJson {
         String fileName = "src/test/resources/JDI_ex8_metalsColorsDataSet.json";
         JSONObject jsonObject = (JSONObject) new JSONParser().parse(new FileReader(fileName));
 
-        Object[][] returnValue = new Object[jsonObject.size()][6];
+        Object[][] returnValue = new Object[jsonObject.size()][1];
 
         for (int i = 0; i < jsonObject.size(); i++) {
             JSONObject data = (JSONObject) jsonObject.get("data_" + (i + 1));
 
             JSONArray summaryArray = (JSONArray) data.get("summary");
 
+            MetalsColoursData metalsColoursData = new MetalsColoursData();
+
             for (Object o : summaryArray) {
                 if ((long) o % 2 == 0) {
-                    returnValue[i][1] = o.toString();
+                    metalsColoursData.setEven(o.toString());
                 } else {
-                    returnValue[i][0] = o.toString();
+                    metalsColoursData.setOdd(o.toString());
                 }
             }
 
@@ -36,19 +38,22 @@ public class ReadTestDataFromJson {
             for (Object value : elementsArray) {
                 elements.append(value).append(", ");
             }
-            returnValue[i][2] = elements.toString();
+            metalsColoursData.setElements(elements.toString());
 
-            returnValue[i][3] = data.get("color").toString();
-            returnValue[i][4] = data.get("metals").toString();
+            metalsColoursData.setColor(data.get("color").toString());
+            metalsColoursData.setMetal(data.get("metals").toString());
 
             JSONArray vegetablesArray = (JSONArray) data.get("vegetables");
             StringBuilder vegetables = new StringBuilder();
             for (Object o : vegetablesArray) {
                 vegetables.append(o).append(", ");
             }
-            returnValue[i][5] = vegetables.toString();
+            metalsColoursData.setVegetables(vegetables.toString());
+
+            returnValue[i][0] = metalsColoursData;
         }
 
         return returnValue;
     }
+
 }
