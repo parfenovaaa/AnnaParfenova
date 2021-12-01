@@ -15,15 +15,14 @@ public class MetalsColoursData extends DataClass<MetalsColoursData> {
         return (Integer.parseInt(odd) + Integer.parseInt(even));
     }
 
-    public MetalsColoursData set(String odd, String even, String[] elements, String color, String metal,
-                                 String[] vegetables) {
+    public MetalsColoursData(String odd, String even, String elements, String color, String metal,
+                             String vegetables) {
         this.odd = odd;
         this.even = even;
-        this.elements = elements;
+        this.elements = elements.split(", ");
         this.color = color;
         this.metal = metal;
-        this.vegetables = vegetables;
-        return this;
+        this.vegetables = vegetables.split(", ");
     }
 
     public String getDataInLine() {

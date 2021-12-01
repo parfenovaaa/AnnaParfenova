@@ -51,21 +51,19 @@ public class BaseTest {
         homePage.checkOpened();
     }
 
-    @Test
-    public void metalsColoursPageTest() {
+    @Test(dataProvider = "readJsonToMetalsColoursData", dataProviderClass = ReadTestDataFromJson.class)
+    public void metalsColoursPageTest(String odd, String even, String elements, String color, String metal,
+                                      String vegetables) {
         shouldBeLoggedIn();
         topMenu.select(MetalsColors);
         metalsColoursPage.shouldBeOpened();
-        ReadTestDataFromJson dataFromJson = new ReadTestDataFromJson();
-        for (int i = 1; i < 6; i++) {
 
-            MetalsColoursData testData = dataFromJson.readJsonToMetalsColoursData(i);
-            enterTestDataOnMetalsColorsPage(testData);
+        MetalsColoursData testData = new MetalsColoursData(odd, even, elements, color, metal, vegetables);
+        enterTestDataOnMetalsColorsPage(testData);
 
-            String expected = testData.getDataInLine();
-            assertData(getResultTextData(), expected);
-            WebPage.refresh();
-        }
+        String expected = testData.getDataInLine();
+        assertData(getResultTextData(), expected);
+        WebPage.refresh();
     }
 
     @Step("Assert data.")
