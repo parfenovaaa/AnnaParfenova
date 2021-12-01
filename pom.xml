@@ -25,7 +25,9 @@
 
     <aspectj.version>1.9.5</aspectj.version>
     <allure.version>2.14.0</allure.version>
-
+    
+    <cucumber-java.version>7.0.0</cucumber-java.version>
+    
     <jdi.version>1.1.34</jdi.version>
     <json-simple.version>1.1.1</json-simple.version>
     <driver>chrome</driver>
@@ -76,6 +78,20 @@
       <id>homework4-test-suite</id>
       <properties>
         <suiteXml>${project.basedir}/src/test/resources/com/epam/tc/hw4/Homework4TestSuite.xml</suiteXml>
+      </properties>
+    </profile>
+    
+    <profile>
+      <id>homework5-cucumber-test-suite</id>
+      <properties>
+        <suiteXml>${project.basedir}/src/test/resources/com/epam/tc/hw5/CucumberTestSuite.xml</suiteXml>
+      </properties>
+    </profile>
+   
+    <profile>
+      <id>homework6-test-suite</id>
+      <properties>
+        <suiteXml>${project.basedir}/src/test/resources/com/epam/tc/hw6/Homework6TestSuite.xml</suiteXml>
       </properties>
     </profile>
 
@@ -147,6 +163,18 @@
       <groupId>com.googlecode.json-simple</groupId>
       <artifactId>json-simple</artifactId>
       <version>${json-simple.version}</version>
+    </dependency>
+    
+    <dependency>
+       <groupId>io.cucumber</groupId>
+      <artifactId>cucumber-testng</artifactId>
+      <version>${cucumber-java.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>io.cucumber</groupId>
+      <artifactId>cucumber-java</artifactId>
+      <version>${cucumber-java.version}</version>
     </dependency>
 
   </dependencies>
