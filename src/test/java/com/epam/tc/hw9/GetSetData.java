@@ -27,7 +27,7 @@ public class GetSetData {
         return consumerKey = property.getProperty("consumerKey");
     }
 
-    public static void setBoardId(String id){
+    public static void setBoardId(String id) {
         try {
             property.setProperty("boardId", id);
             property.store(new FileOutputStream("src/test/resources/boardId.properties"), null);

@@ -5,14 +5,17 @@ import static com.epam.tc.hw9.core.TrelloServiceObject.getTheDeleteAnswer;
 import static com.epam.tc.hw9.core.TrelloServiceObject.requestBuilder;
 import static com.epam.tc.hw9.core.TrelloServiceObject.responseSpecError;
 import static com.epam.tc.hw9.core.TrelloServiceObject.responseSpecOk;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.nullValue;
 
 import com.epam.tc.hw9.beans.Board;
 import com.epam.tc.hw9.beans.DeletedBoard;
 import io.restassured.http.Method;
 import java.io.IOException;
 import org.apache.commons.lang.RandomStringUtils;
-import org.testng.Assert;
 import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.Test;
 
@@ -48,7 +51,7 @@ public class BoardApiTest {
                 .sendRequest(request)
         );
 
-        Assert.assertEquals(name, board.getName());
+        assertThat(board.getName(), is(equalTo(name)));
 
         GetSetData.setBoardId(board.getId());
     }
@@ -88,9 +91,11 @@ public class BoardApiTest {
                 .buildRequest()
                 .sendRequest(request + boardId));
 
-        Assert.assertEquals(GetSetData.getBoardName(), board.getName());
-        Assert.assertEquals(GetSetData.getBoardDesc(), board.getDesc());
-        Assert.assertEquals(GetSetData.getBoardColour(), board.getPrefs().background);
+
+        assertThat(board.getName(), is(equalTo(GetSetData.getBoardName())));
+        assertThat(board.getDesc(), is(equalTo(GetSetData.getBoardDesc())));
+        assertThat(board.getPrefs().background, is(equalTo(GetSetData.getBoardColour())));
+
     }
 
     @Test(priority = 4)
@@ -106,7 +111,7 @@ public class BoardApiTest {
                 .buildRequest()
                 .sendRequest(request + boardId));
 
-        Assert.assertNull(board.get_value());
+        assertThat(board.get_value(), nullValue());
     }
 
     @Test(priority = 5)
