@@ -36,6 +36,8 @@ public class BoardApiTest {
         }
     }
 
+    String boardId;
+
     @Test(priority = 1)
     public void createBoardTest() {
 
@@ -53,35 +55,31 @@ public class BoardApiTest {
 
         assertThat(board.getName(), is(equalTo(name)));
 
-        GetSetData.setBoardId(board.getId());
+        boardId = board.getId();
     }
+
+    String newBoardName = "We changed board name";
+    String newBoardDesc = "And added some desc";
+    String newBoardColour = "pink";
 
     @Test(priority = 2)
     public void updateBoardNameTest() {
 
-        String name = "We changed board name";
-        String desc = "And added some desc";
-        String boardColour = "pink";
-
-        String boardId = GetSetData.getBoardId();
         requestBuilder()
             .setKey(consumerKey)
             .setToken(accessToken)
-            .setName(name)
-            .setDesc(desc)
-            .setColour(boardColour)
+            .setName(newBoardName)
+            .setDesc(newBoardDesc)
+            .setColour(newBoardColour)
             .setMethod(Method.PUT)
             .buildRequest()
             .sendRequest(request + boardId)
             .then().assertThat().spec(responseSpecOk());
 
-        GetSetData.setBoardData(name, desc, boardColour);
     }
 
     @Test(priority = 3)
     public void getExistBoardTest() {
-
-        String boardId = GetSetData.getBoardId();
 
         Board board = getBoardData(
             requestBuilder()
@@ -92,16 +90,14 @@ public class BoardApiTest {
                 .sendRequest(request + boardId));
 
 
-        assertThat(board.getName(), is(equalTo(GetSetData.getBoardName())));
-        assertThat(board.getDesc(), is(equalTo(GetSetData.getBoardDesc())));
-        assertThat(board.getPrefs().background, is(equalTo(GetSetData.getBoardColour())));
+        assertThat(board.getName(), is(equalTo(newBoardName)));
+        assertThat(board.getDesc(), is(equalTo(newBoardDesc)));
+        assertThat(board.getPrefs().background, is(equalTo(newBoardColour)));
 
     }
 
     @Test(priority = 4)
     public void deleteBoardTest() {
-
-        String boardId = GetSetData.getBoardId();
 
         DeletedBoard board = getTheDeleteAnswer(
             requestBuilder()
@@ -116,8 +112,6 @@ public class BoardApiTest {
 
     @Test(priority = 5)
     public void getDeletedBoardTest() {
-
-        String boardId = GetSetData.getBoardId();
 
         requestBuilder()
             .setKey(consumerKey)
