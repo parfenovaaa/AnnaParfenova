@@ -33,6 +33,9 @@
     <driver>chrome</driver>
     <domain>https://jdi-testing.github.io/jdi-light/</domain>
 
+    <rest-assured.version>4.4.0</rest-assured.version>
+    <hamcrest-core.version>2.2</hamcrest-core.version>
+
   </properties>
 
   <profiles>
@@ -99,6 +102,13 @@
       <id>homework7-test-suite</id>
       <properties>
         <suiteXml>${project.basedir}/src/test/resources/com/epam/tc/hw7/Homework7TestSuite.xml</suiteXml>
+      </properties>
+    </profile>
+
+    <profile>
+      <id>homework9-test-suite</id>
+      <properties>
+        <suiteXml>${project.basedir}/src/test/resources/com/epam/tc/hw9/Homework9TestSuite.xml</suiteXml>
       </properties>
     </profile>
 
@@ -177,6 +187,24 @@
       <version>${cucumber-java.version}</version>
     </dependency>
 
+    <dependency>
+      <groupId>io.rest-assured</groupId>
+      <artifactId>rest-assured</artifactId>
+      <version>${rest-assured.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.hamcrest</groupId>
+      <artifactId>hamcrest-core</artifactId>
+      <version>${hamcrest-core.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.google.code.gson</groupId>
+      <artifactId>gson</artifactId>
+      <version>2.8.6</version>
+    </dependency>
+
   </dependencies>
 
   <build>
@@ -236,6 +264,7 @@
           </dependency>
         </dependencies>
       </plugin>
+
     </plugins>
   </build>
 
