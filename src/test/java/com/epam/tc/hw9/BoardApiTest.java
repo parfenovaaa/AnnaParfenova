@@ -1,10 +1,9 @@
 package com.epam.tc.hw9;
 
-import static com.epam.tc.hw9.core.TrelloServiceObject.getBoardData;
-import static com.epam.tc.hw9.core.TrelloServiceObject.getTheDeleteAnswer;
-import static com.epam.tc.hw9.core.TrelloServiceObject.requestBuilder;
-import static com.epam.tc.hw9.core.TrelloServiceObject.responseSpecError;
-import static com.epam.tc.hw9.core.TrelloServiceObject.responseSpecOk;
+import static com.epam.tc.hw9.beans.BoardBackgroundColour.randomColour;
+import static com.epam.tc.hw9.core.BoardServiceObject.getBoardData;
+import static com.epam.tc.hw9.core.BoardServiceObject.responseSpecError;
+import static com.epam.tc.hw9.core.BoardServiceObject.responseSpecOk;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
@@ -12,117 +11,113 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.nullValue;
 
 import com.epam.tc.hw9.beans.Board;
-import com.epam.tc.hw9.beans.DeletedBoard;
-import io.restassured.http.Method;
-import java.io.IOException;
-import org.apache.commons.lang.RandomStringUtils;
-import org.testng.annotations.BeforeSuite;
+import com.epam.tc.hw9.steps.BoardSteps;
+import io.restassured.response.Response;
+import java.util.Random;
 import org.testng.annotations.Test;
 
 public class BoardApiTest {
 
-    private String consumerKey;
-    private String accessToken;
-
-    private final String request = "/1/boards/";
-
-    @BeforeSuite
-    public void setUp() {
-        try {
-            consumerKey = GetSetData.getKey();
-            accessToken = GetSetData.getToken();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    String boardId;
-
-    @Test(priority = 1)
+    @Test
     public void createBoardTest() {
 
-        String name = RandomStringUtils.random(10);
+        String boardName = randomString();
+        Response response = BoardSteps.createBoard(boardName);
+        response.then().spec(responseSpecOk());
 
-        Board board = getBoardData(
-            requestBuilder()
-                .setKey(consumerKey)
-                .setToken(accessToken)
-                .setName(name)
-                .setMethod(Method.POST)
-                .buildRequest()
-                .sendRequest(request)
-        );
+        Board board = getBoardData(response);
+        assertThat(board.getName(), is(equalTo(boardName)));
 
-        assertThat(board.getName(), is(equalTo(name)));
-
-        boardId = board.getId();
+        BoardSteps.deleteBoard(board.getId());
     }
 
-    String newBoardName = "We changed board name";
-    String newBoardDesc = "And added some desc";
-    String newBoardColour = "pink";
-
-    @Test(priority = 2)
+    @Test
     public void updateBoardNameTest() {
 
-        requestBuilder()
-            .setKey(consumerKey)
-            .setToken(accessToken)
-            .setName(newBoardName)
-            .setDesc(newBoardDesc)
-            .setColour(newBoardColour)
-            .setMethod(Method.PUT)
-            .buildRequest()
-            .sendRequest(request + boardId)
-            .then().assertThat().spec(responseSpecOk());
+        String boardName = randomString();
+        Board testBoard = getBoardData(BoardSteps.createBoard(boardName));
 
-    }
+        String newBoardName = randomString();
+        String newBoardDesc = randomString();
+        String newBoardColour = String.valueOf(randomColour());
 
-    @Test(priority = 3)
-    public void getExistBoardTest() {
-
-        Board board = getBoardData(
-            requestBuilder()
-                .setKey(consumerKey)
-                .setToken(accessToken)
-                .setMethod(Method.GET)
-                .buildRequest()
-                .sendRequest(request + boardId));
-
+        Response response = BoardSteps.updateBoardData(testBoard.getId(),
+                newBoardName,
+                newBoardDesc,
+                newBoardColour);
+        response.then()
+                .assertThat().spec(responseSpecOk());
+        Board board = getBoardData(response);
 
         assertThat(board.getName(), is(equalTo(newBoardName)));
         assertThat(board.getDesc(), is(equalTo(newBoardDesc)));
-        assertThat(board.getPrefs().background, is(equalTo(newBoardColour)));
+        assertThat(board.getPrefs().getBackground(), is(equalTo(newBoardColour)));
 
+        BoardSteps.deleteBoard(board.getId());
     }
 
-    @Test(priority = 4)
+    @Test
+    public void getExistBoardTest() {
+
+        String boardName = randomString();
+        Board testBoard = getBoardData(BoardSteps.createBoard(boardName));
+
+        String newBoardName = randomString();
+        String newBoardDesc = randomString();
+        String newBoardColour = String.valueOf(randomColour());
+
+        BoardSteps.updateBoardData(testBoard.getId(), newBoardName,
+                newBoardDesc,
+                newBoardColour);
+
+        Response response = BoardSteps.getBoard(testBoard.getId());
+        response.then()
+                .assertThat().spec(responseSpecOk());
+        Board board = getBoardData(response);
+        assertThat(board.getName(), is(equalTo(newBoardName)));
+        assertThat(board.getDesc(), is(equalTo(newBoardDesc)));
+        assertThat(board.getPrefs().getBackground(), is(equalTo(newBoardColour)));
+
+        BoardSteps.deleteBoard(board.getId());
+    }
+
+    @Test
     public void deleteBoardTest() {
 
-        DeletedBoard board = getTheDeleteAnswer(
-            requestBuilder()
-                .setKey(consumerKey)
-                .setToken(accessToken)
-                .setMethod(Method.DELETE)
-                .buildRequest()
-                .sendRequest(request + boardId));
+        String boardName = randomString();
+        Board testBoard = getBoardData(BoardSteps.createBoard(boardName));
 
-        assertThat(board.get_value(), nullValue());
+        Response response = BoardSteps.deleteBoard(testBoard.getId());
+        response.then()
+                .assertThat().spec(responseSpecOk());
+
+        assertThat(response.path("_value"), nullValue());
     }
 
-    @Test(priority = 5)
+    @Test
     public void getDeletedBoardTest() {
 
-        requestBuilder()
-            .setKey(consumerKey)
-            .setToken(accessToken)
-            .setMethod(Method.GET)
-            .buildRequest()
-            .sendRequest(request + boardId)
-            .then()
-            .assertThat()
-            .spec(responseSpecError())
-            .and()
-            .body(containsString("The requested resource was not found."));
+        String boardName = randomString();
+        Board testBoard = getBoardData(BoardSteps.createBoard(boardName));
+        BoardSteps.deleteBoard(testBoard.getId());
+
+        Response response = BoardSteps.getBoard(testBoard.getId());
+        response.then()
+                .assertThat().spec(responseSpecError())
+                .and()
+                .body(containsString("The requested resource was not found."));
     }
+
+    public String randomString() {
+        int leftLimit = 97; // letter 'a'
+        int rightLimit = 122; // letter 'z'
+        int targetStringLength = 10;
+        Random random = new Random();
+
+        return random.ints(leftLimit, rightLimit + 1)
+                .limit(targetStringLength)
+                .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
+                .toString();
+    }
+
 }

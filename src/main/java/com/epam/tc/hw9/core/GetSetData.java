@@ -1,4 +1,4 @@
-package com.epam.tc.hw9;
+package com.epam.tc.hw9.core;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -8,6 +8,7 @@ public class GetSetData {
 
     public static String consumerKey;
     public static String accessToken;
+    public static String URL;
 
     public static Properties property = new Properties();
 
@@ -24,6 +25,11 @@ public class GetSetData {
     public static String getKey() throws IOException {
         loadFIle("src/test/resources/api.properties");
         return consumerKey = property.getProperty("consumerKey");
+    }
+
+    public static String getURL() throws IOException {
+        loadFIle("src/test/resources/api.properties");
+        return URL = property.getProperty("URL");
     }
 
 }

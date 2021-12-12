@@ -41,9 +41,6 @@
   <profiles>
     <profile>
       <id>sum-sub-test-suite</id>
-      <activation>
-        <activeByDefault>true</activeByDefault>
-      </activation>
       <properties>
         <suiteXml>${project.basedir}/src/test/resources/com/epam/tc/hw1/SumSubTestSuite.xml</suiteXml>
       </properties>
@@ -107,6 +104,9 @@
 
     <profile>
       <id>homework9-test-suite</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
       <properties>
         <suiteXml>${project.basedir}/src/test/resources/com/epam/tc/hw9/Homework9TestSuite.xml</suiteXml>
       </properties>

@@ -1,7 +1,6 @@
 package com.epam.tc.hw9.core;
 
 import com.epam.tc.hw9.beans.Board;
-import com.epam.tc.hw9.beans.DeletedBoard;
 import io.restassured.RestAssured;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.builder.ResponseSpecBuilder;
@@ -10,23 +9,36 @@ import io.restassured.http.Method;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 import io.restassured.specification.ResponseSpecification;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-public class TrelloServiceObject {
+public class BoardServiceObject {
 
-    public static final String URL = "https://api.trello.com";
+    private static String URL;
+    private static String consumerKey;
+    private static String accessToken;
+
+    public static final String request = "/1/boards/";
+
     private final Method requestMethod;
-
     private final Map<String, String> parameters;
 
-    private TrelloServiceObject(Map<String, String> parameters, Method method) {
+    private BoardServiceObject(Map<String, String> parameters, Method method) {
+
         this.parameters = parameters;
         this.requestMethod = method;
     }
 
     public static ApiRequestBuilder requestBuilder() {
-        return new ApiRequestBuilder();
+        try {
+            consumerKey = GetSetData.getKey();
+            accessToken = GetSetData.getToken();
+            URL = GetSetData.getURL() + request;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return new ApiRequestBuilder().setKey(consumerKey).setToken(accessToken);
     }
 
     public static class ApiRequestBuilder {
@@ -68,42 +80,46 @@ public class TrelloServiceObject {
             return this;
         }
 
-        public TrelloServiceObject buildRequest() {
-            return new TrelloServiceObject(parameters, requestMethod);
+        public BoardServiceObject buildRequest() {
+            return new BoardServiceObject(parameters, requestMethod);
         }
     }
 
-    public Response sendRequest(String urlPart) {
+    public Response sendRequest() {
         return RestAssured
-            .given(requestSpecification()).log().all()
-            .queryParams(parameters)
-            .request(requestMethod, URL + urlPart)
-            .prettyPeek();
+                .given(requestSpecification()).log().all()
+                .queryParams(parameters)
+                .request(requestMethod, URL)
+                .prettyPeek();
+    }
+
+    public Response sendRequest(String request) {
+        return RestAssured
+                .given(requestSpecification()).log().all()
+                .queryParams(parameters)
+                .request(requestMethod, URL + request)
+                .prettyPeek();
     }
 
     public static RequestSpecification requestSpecification() {
         return new RequestSpecBuilder()
-            .setContentType(ContentType.JSON)
-            .setBaseUri(URL)
-            .build();
+                .setContentType(ContentType.JSON)
+                .setBaseUri(URL)
+                .build();
     }
 
     public static ResponseSpecification responseSpecOk() {
         return new ResponseSpecBuilder()
-            .expectContentType(ContentType.JSON)
-            .expectStatusCode(200)
-            .build();
+                .expectContentType(ContentType.JSON)
+                .expectStatusCode(200)
+                .build();
     }
 
     public static ResponseSpecification responseSpecError() {
         return new ResponseSpecBuilder()
-            .expectContentType(ContentType.TEXT)
-            .expectStatusCode(404)
-            .build();
-    }
-
-    public static DeletedBoard getTheDeleteAnswer(Response response) {
-        return response.as(DeletedBoard.class);
+                .expectContentType(ContentType.TEXT)
+                .expectStatusCode(404)
+                .build();
     }
 
     public static Board getBoardData(Response response) {
