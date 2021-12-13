@@ -1,21 +1,21 @@
 package com.epam.tc.hw9.core;
 
 import com.epam.tc.hw9.GetData;
-import com.epam.tc.hw9.board.Board;
+import com.epam.tc.hw9.lists.Lists;
 import io.restassured.http.Method;
 import io.restassured.response.Response;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-public class BoardServiceObject extends TrelloServiceObject {
+public class ListsServiceObject extends TrelloServiceObject {
 
     private static String consumerKey;
     private static String accessToken;
 
-    public static final String request = "/1/boards/";
+    public static final String request = "/1/lists/";
 
-    private BoardServiceObject(Map<String, String> parameters, Method method) {
+    private ListsServiceObject(Map<String, String> parameters, Method method) {
         super();
         this.parameters = parameters;
         this.requestMethod = method;
@@ -56,23 +56,33 @@ public class BoardServiceObject extends TrelloServiceObject {
             return this;
         }
 
-        public ApiRequestBuilder setDesc(String desc) {
-            parameters.put("desc", desc);
+        public ApiRequestBuilder setIdBoard(String idBoard) {
+            parameters.put("idBoard", idBoard);
             return this;
         }
 
-        public ApiRequestBuilder setColour(String colour) {
-            parameters.put("prefs/background", colour);
+        public ApiRequestBuilder setPos(String pos) {
+            parameters.put("pos", pos);
             return this;
         }
 
-        public BoardServiceObject buildRequest() {
-            return new BoardServiceObject(parameters, requestMethod);
+        public ApiRequestBuilder setClosed(String closed) {
+            parameters.put("closed", closed);
+            return this;
+        }
+
+        public ApiRequestBuilder setValue(String value) {
+            parameters.put("value", value);
+            return this;
+        }
+
+        public ListsServiceObject buildRequest() {
+            return new ListsServiceObject(parameters, requestMethod);
         }
     }
 
-    public static Board getBoardData(Response response) {
-        return response.as(Board.class);
+    public static Lists getListsData(Response response) {
+        return response.as(Lists.class);
     }
 
 

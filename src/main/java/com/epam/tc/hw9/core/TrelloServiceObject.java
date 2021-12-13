@@ -50,10 +50,18 @@ public class TrelloServiceObject {
                 .build();
     }
 
+
     public static ResponseSpecification responseSpecError() {
         return new ResponseSpecBuilder()
                 .expectContentType(ContentType.TEXT)
                 .expectStatusCode(404)
+                .build();
+    }
+
+    public static ResponseSpecification responseSpecBadReq() {
+        return new ResponseSpecBuilder()
+                .expectContentType(ContentType.TEXT)
+                .expectStatusCode(400)
                 .build();
     }
 

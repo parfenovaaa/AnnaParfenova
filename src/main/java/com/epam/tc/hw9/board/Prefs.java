@@ -1,4 +1,4 @@
-package com.epam.tc.hw9.beans;
+package com.epam.tc.hw9.board;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 

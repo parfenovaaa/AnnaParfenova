@@ -4,6 +4,7 @@
   <test name="Homework9Tests">
     <classes>
       <class name="com.epam.tc.hw9.BoardApiTest"/>
+      <class name="com.epam.tc.hw9.ListsApiTest"/>
     </classes>
   </test>
 

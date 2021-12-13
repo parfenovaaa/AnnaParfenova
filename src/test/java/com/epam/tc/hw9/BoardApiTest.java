@@ -1,6 +1,6 @@
 package com.epam.tc.hw9;
 
-import static com.epam.tc.hw9.beans.BoardBackgroundColour.randomColour;
+import static com.epam.tc.hw9.board.BoardBackgroundColour.randomColour;
 import static com.epam.tc.hw9.core.BoardServiceObject.getBoardData;
 import static com.epam.tc.hw9.core.BoardServiceObject.requestBuilder;
 import static com.epam.tc.hw9.core.TrelloServiceObject.responseSpecError;
@@ -11,7 +11,7 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.nullValue;
 
-import com.epam.tc.hw9.beans.Board;
+import com.epam.tc.hw9.board.Board;
 import com.epam.tc.hw9.steps.BoardSteps;
 import io.restassured.http.Method;
 import io.restassured.response.Response;

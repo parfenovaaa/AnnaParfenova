@@ -1,10 +1,10 @@
-package com.epam.tc.hw9.core;
+package com.epam.tc.hw9;
 
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Properties;
 
-public class GetSetData {
+public class GetData {
 
     public static String consumerKey;
     public static String accessToken;
