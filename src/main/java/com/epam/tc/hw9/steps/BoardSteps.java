@@ -5,32 +5,18 @@ import static com.epam.tc.hw9.core.BoardServiceObject.requestBuilder;
 import io.qameta.allure.Step;
 import io.restassured.http.Method;
 import io.restassured.response.Response;
+import java.util.Random;
 
 public class BoardSteps {
 
     @Step("Creating new board")
-    public static Response createBoard(String boardName) {
+    public static Response createBoard() {
+        String boardName = randomString();
         return requestBuilder()
                 .setName(boardName)
                 .setMethod(Method.POST)
                 .buildRequest()
                 .sendRequest();
-    }
-
-    @Step("Update board. Put new name, description, background colour.")
-    public static Response updateBoardData(String boardId,
-                                        String boardName,
-                                        String boardDesc,
-                                        String boardColour) {
-
-        return requestBuilder()
-                .setName(boardName)
-                .setDesc(boardDesc)
-                .setColour(boardColour)
-                .setMethod(Method.PUT)
-                .buildRequest()
-                .sendRequest(boardId);
-
     }
 
     @Step("Get board")
@@ -51,6 +37,18 @@ public class BoardSteps {
                 .buildRequest()
                 .sendRequest(boardId);
 
+    }
+
+    public static String randomString() {
+        int leftLimit = 97; // letter 'a'
+        int rightLimit = 122; // letter 'z'
+        int targetStringLength = 10;
+        Random random = new Random();
+
+        return random.ints(leftLimit, rightLimit + 1)
+                .limit(targetStringLength)
+                .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
+                .toString();
     }
 
 

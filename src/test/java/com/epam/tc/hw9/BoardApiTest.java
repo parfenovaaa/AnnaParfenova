@@ -2,8 +2,9 @@ package com.epam.tc.hw9;
 
 import static com.epam.tc.hw9.beans.BoardBackgroundColour.randomColour;
 import static com.epam.tc.hw9.core.BoardServiceObject.getBoardData;
-import static com.epam.tc.hw9.core.BoardServiceObject.responseSpecError;
-import static com.epam.tc.hw9.core.BoardServiceObject.responseSpecOk;
+import static com.epam.tc.hw9.core.BoardServiceObject.requestBuilder;
+import static com.epam.tc.hw9.core.TrelloServiceObject.responseSpecError;
+import static com.epam.tc.hw9.core.TrelloServiceObject.responseSpecOk;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
@@ -12,6 +13,7 @@ import static org.hamcrest.Matchers.nullValue;
 
 import com.epam.tc.hw9.beans.Board;
 import com.epam.tc.hw9.steps.BoardSteps;
+import io.restassured.http.Method;
 import io.restassured.response.Response;
 import java.util.Random;
 import org.testng.annotations.Test;
@@ -22,7 +24,11 @@ public class BoardApiTest {
     public void createBoardTest() {
 
         String boardName = randomString();
-        Response response = BoardSteps.createBoard(boardName);
+        Response response = requestBuilder()
+                .setName(boardName)
+                .setMethod(Method.POST)
+                .buildRequest()
+                .sendRequest();
         response.then().spec(responseSpecOk());
 
         Board board = getBoardData(response);
@@ -34,17 +40,19 @@ public class BoardApiTest {
     @Test
     public void updateBoardNameTest() {
 
-        String boardName = randomString();
-        Board testBoard = getBoardData(BoardSteps.createBoard(boardName));
+        Board testBoard = getBoardData(BoardSteps.createBoard());
 
         String newBoardName = randomString();
         String newBoardDesc = randomString();
         String newBoardColour = String.valueOf(randomColour());
 
-        Response response = BoardSteps.updateBoardData(testBoard.getId(),
-                newBoardName,
-                newBoardDesc,
-                newBoardColour);
+        Response response = requestBuilder()
+                .setName(newBoardName)
+                .setDesc(newBoardDesc)
+                .setColour(newBoardColour)
+                .setMethod(Method.PUT)
+                .buildRequest()
+                .sendRequest(testBoard.getId());
         response.then()
                 .assertThat().spec(responseSpecOk());
         Board board = getBoardData(response);
@@ -59,16 +67,19 @@ public class BoardApiTest {
     @Test
     public void getExistBoardTest() {
 
-        String boardName = randomString();
-        Board testBoard = getBoardData(BoardSteps.createBoard(boardName));
+        Board testBoard = getBoardData(BoardSteps.createBoard());
 
         String newBoardName = randomString();
         String newBoardDesc = randomString();
         String newBoardColour = String.valueOf(randomColour());
 
-        BoardSteps.updateBoardData(testBoard.getId(), newBoardName,
-                newBoardDesc,
-                newBoardColour);
+        requestBuilder()
+                .setName(newBoardName)
+                .setDesc(newBoardDesc)
+                .setColour(newBoardColour)
+                .setMethod(Method.PUT)
+                .buildRequest()
+                .sendRequest(testBoard.getId());
 
         Response response = BoardSteps.getBoard(testBoard.getId());
         response.then()
@@ -84,8 +95,7 @@ public class BoardApiTest {
     @Test
     public void deleteBoardTest() {
 
-        String boardName = randomString();
-        Board testBoard = getBoardData(BoardSteps.createBoard(boardName));
+        Board testBoard = getBoardData(BoardSteps.createBoard());
 
         Response response = BoardSteps.deleteBoard(testBoard.getId());
         response.then()
@@ -97,8 +107,7 @@ public class BoardApiTest {
     @Test
     public void getDeletedBoardTest() {
 
-        String boardName = randomString();
-        Board testBoard = getBoardData(BoardSteps.createBoard(boardName));
+        Board testBoard = getBoardData(BoardSteps.createBoard());
         BoardSteps.deleteBoard(testBoard.getId());
 
         Response response = BoardSteps.getBoard(testBoard.getId());
@@ -109,8 +118,8 @@ public class BoardApiTest {
     }
 
     public String randomString() {
-        int leftLimit = 97; // letter 'a'
-        int rightLimit = 122; // letter 'z'
+        int leftLimit = 97;
+        int rightLimit = 122;
         int targetStringLength = 10;
         Random random = new Random();
 
