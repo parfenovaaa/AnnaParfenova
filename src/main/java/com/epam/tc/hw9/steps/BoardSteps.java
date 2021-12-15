@@ -1,42 +1,43 @@
 package com.epam.tc.hw9.steps;
 
+import static com.epam.tc.hw9.core.BoardServiceObject.getBoardData;
 import static com.epam.tc.hw9.core.BoardServiceObject.requestBuilder;
+import static com.epam.tc.hw9.core.TrelloServiceObject.responseSpecOk;
 
+import com.epam.tc.hw9.board.Board;
 import io.qameta.allure.Step;
 import io.restassured.http.Method;
-import io.restassured.response.Response;
 import java.util.Random;
 
 public class BoardSteps {
 
     @Step("Creating new board")
-    public static Response createBoard() {
+    public static Board createBoard() {
         String boardName = randomString();
-        return requestBuilder()
+        return getBoardData(requestBuilder()
                 .setName(boardName)
                 .setMethod(Method.POST)
                 .buildRequest()
-                .sendRequest();
+                .sendRequest());
     }
 
     @Step("Get board")
-    public static Response getBoard(String boardId) {
+    public static Board getBoard(String boardId) {
 
-        return requestBuilder()
+        return getBoardData(requestBuilder()
                 .setMethod(Method.GET)
                 .buildRequest()
-                .sendRequest(boardId);
+                .sendRequest(boardId));
 
     }
 
     @Step("Delete board")
-    public static Response deleteBoard(String boardId) {
+    public static void deleteBoard(String boardId) {
 
-        return requestBuilder()
+        requestBuilder()
                 .setMethod(Method.DELETE)
                 .buildRequest()
-                .sendRequest(boardId);
-
+                .sendRequest(boardId).then().spec(responseSpecOk());
     }
 
     public static String randomString() {

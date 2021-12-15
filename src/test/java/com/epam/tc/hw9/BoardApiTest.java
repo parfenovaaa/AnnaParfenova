@@ -40,7 +40,7 @@ public class BoardApiTest {
     @Test
     public void updateBoardNameTest() {
 
-        Board testBoard = getBoardData(BoardSteps.createBoard());
+        Board testBoard = BoardSteps.createBoard();
 
         String newBoardName = randomString();
         String newBoardDesc = randomString();
@@ -67,7 +67,7 @@ public class BoardApiTest {
     @Test
     public void getExistBoardTest() {
 
-        Board testBoard = getBoardData(BoardSteps.createBoard());
+        Board testBoard = BoardSteps.createBoard();
 
         String newBoardName = randomString();
         String newBoardDesc = randomString();
@@ -81,10 +81,8 @@ public class BoardApiTest {
                 .buildRequest()
                 .sendRequest(testBoard.getId());
 
-        Response response = BoardSteps.getBoard(testBoard.getId());
-        response.then()
-                .assertThat().spec(responseSpecOk());
-        Board board = getBoardData(response);
+        Board board = BoardSteps.getBoard(testBoard.getId());
+
         assertThat(board.getName(), is(equalTo(newBoardName)));
         assertThat(board.getDesc(), is(equalTo(newBoardDesc)));
         assertThat(board.getPrefs().getBackground(), is(equalTo(newBoardColour)));
@@ -95,9 +93,12 @@ public class BoardApiTest {
     @Test
     public void deleteBoardTest() {
 
-        Board testBoard = getBoardData(BoardSteps.createBoard());
+        Board testBoard = BoardSteps.createBoard();
 
-        Response response = BoardSteps.deleteBoard(testBoard.getId());
+        Response response = requestBuilder()
+                .setMethod(Method.DELETE)
+                .buildRequest()
+                .sendRequest(testBoard.getId());
         response.then()
                 .assertThat().spec(responseSpecOk());
 
@@ -107,10 +108,13 @@ public class BoardApiTest {
     @Test
     public void getDeletedBoardTest() {
 
-        Board testBoard = getBoardData(BoardSteps.createBoard());
+        Board testBoard = BoardSteps.createBoard();
         BoardSteps.deleteBoard(testBoard.getId());
 
-        Response response = BoardSteps.getBoard(testBoard.getId());
+        Response response = requestBuilder()
+                .setMethod(Method.GET)
+                .buildRequest()
+                .sendRequest(testBoard.getId());
         response.then()
                 .assertThat().spec(responseSpecError())
                 .and()

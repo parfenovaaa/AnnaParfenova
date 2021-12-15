@@ -1,32 +1,34 @@
 package com.epam.tc.hw9.steps;
 
+import static com.epam.tc.hw9.core.ListsServiceObject.getListsData;
 import static com.epam.tc.hw9.core.ListsServiceObject.requestBuilder;
+import static com.epam.tc.hw9.core.TrelloServiceObject.responseSpecOk;
 
+import com.epam.tc.hw9.lists.Lists;
 import io.qameta.allure.Step;
 import io.restassured.http.Method;
-import io.restassured.response.Response;
 import java.util.Random;
 
 public class ListsSteps {
 
     @Step("Create new list")
-    public static Response createList(String idBoard) {
+    public static Lists createList(String idBoard) {
         String listName = randomString();
-        return requestBuilder()
+        return getListsData(requestBuilder()
                 .setName(listName)
                 .setIdBoard(idBoard)
                 .setMethod(Method.POST)
                 .buildRequest()
-                .sendRequest();
+                .sendRequest());
     }
 
     @Step("Get list")
-    public static Response getList(String listId) {
+    public static Lists getList(String listId) {
 
-        return requestBuilder()
+        return getListsData(requestBuilder()
                 .setMethod(Method.GET)
                 .buildRequest()
-                .sendRequest(listId);
+                .sendRequest(listId));
 
     }
 

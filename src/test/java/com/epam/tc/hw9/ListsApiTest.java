@@ -1,6 +1,5 @@
 package com.epam.tc.hw9;
 
-import static com.epam.tc.hw9.core.BoardServiceObject.getBoardData;
 import static com.epam.tc.hw9.core.ListsServiceObject.getListsData;
 import static com.epam.tc.hw9.core.ListsServiceObject.requestBuilder;
 import static com.epam.tc.hw9.core.TrelloServiceObject.responseSpecBadReq;
@@ -22,7 +21,7 @@ public class ListsApiTest {
     @Test
     public void createListTest() {
 
-        String testBoardId = getBoardData(BoardSteps.createBoard()).getId();
+        String testBoardId = BoardSteps.createBoard().getId();
 
         String listName = randomString();
         Response response = requestBuilder()
@@ -55,8 +54,8 @@ public class ListsApiTest {
     @Test
     public void updateListNameTest() {
 
-        String testBoardId = getBoardData(BoardSteps.createBoard()).getId();
-        Lists list = getListsData(ListsSteps.createList(testBoardId));
+        String testBoardId = BoardSteps.createBoard().getId();
+        Lists list = ListsSteps.createList(testBoardId);
 
         String newListName = randomString();
 
@@ -77,10 +76,10 @@ public class ListsApiTest {
     @Test
     public void moveListTest() {
 
-        String testBoardId = getBoardData(BoardSteps.createBoard()).getId();
-        Lists list = getListsData(ListsSteps.createList(testBoardId));
+        String testBoardId = BoardSteps.createBoard().getId();
+        Lists list = ListsSteps.createList(testBoardId);
 
-        String newTestBoardId = getBoardData(BoardSteps.createBoard()).getId();
+        String newTestBoardId = BoardSteps.createBoard().getId();
 
         requestBuilder()
                 .setIdBoard(newTestBoardId)
@@ -88,11 +87,7 @@ public class ListsApiTest {
                 .buildRequest()
                 .sendRequest(list.getId());
 
-        Response response = ListsSteps.getList(list.getId());
-        response.then()
-                .assertThat().spec(responseSpecOk());
-
-        Lists lists = getListsData(response);
+        Lists lists = ListsSteps.getList(list.getId());
 
         assertThat(lists.getIdBoard(), is(equalTo(newTestBoardId)));
 
