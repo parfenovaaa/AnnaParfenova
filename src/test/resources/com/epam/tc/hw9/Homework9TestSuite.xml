@@ -1,0 +1,11 @@
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd" >
+<suite name="Homework9">
+
+  <test name="Homework9Tests">
+    <classes>
+      <class name="com.epam.tc.hw9.BoardApiTest"/>
+      <class name="com.epam.tc.hw9.ListsApiTest"/>
+    </classes>
+  </test>
+
+</suite>
